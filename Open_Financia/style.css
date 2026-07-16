@@ -1,0 +1,588 @@
+@keyframes crescer{
+    from{
+        transform: scaleX(0);
+    }
+    to {
+        transform:scaleX(1);
+    }
+}
+body{
+    background-color: #F8F8FF;
+}
+.dashboard{
+    display: flex;
+    gap: 25px;
+    padding: 25px;
+}
+.ini{
+    width: 70%;
+    background: white;
+    border-radius: 28px;
+    padding: 21px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.08);
+}
+.Inicio{
+    color:black;
+}
+
+.Inicio h1{
+    color:black;
+}
+
+
+.resumo{
+    color:black;
+    margin-top:40px;
+    margin-left:70px;
+}
+
+.resumo h2{
+    margin-top:0;
+}
+
+.cards{
+    display:flex;
+    gap:20px;
+    margin-left: 50px;
+    margin-right:70px;
+}
+.cards :hover{
+    transform: translateY(-8px);
+    
+}
+.card{
+
+    border:2px solid black;
+    width:230px;
+    padding:20px;
+    border-radius:15px;
+    border-radius: 10% 25%;
+    background:white;
+    border:none;
+    box-shadow:0 8px 25px rgba(0,0,0,.10);
+    transition:0.3s;
+}
+.card p{
+    font-size: 14px;
+    font-weight: 600;
+    color:#22c55e
+}
+.card h2{
+    font-size:23px;
+    font-weight:700;
+    color:#111;
+    margin:8px 0;
+}
+.card h3{
+    font-size: 15px;
+    font-weight: 500;
+    color: #666;
+}
+.grafico{
+    width: 500px;
+    height: 280px;
+    margin-left: 141px;
+    margin-top: 40px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 25px;
+    transition: .3s;
+
+}
+.grafico:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 18px 35px rgba(0,0,0,.15);
+}
+.grafico h2{
+    margin: 0;
+    font-size: 22px;
+}
+.grafico-area{
+    height: 180px;
+    margin-top: 20px;
+    border-radius: 12px;
+    background: #F8F8FF;
+    position: relative;
+}
+.eixo-y{
+    position: absolute;
+    left: -19px;
+    top: -29px;
+    height: 110%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #888;
+
+}
+.meses{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 13px;
+    color: #000;
+    font-size: 14px;
+}
+.meses:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 18px 35px rgba(0,0,0,.15);
+}
+.ponto{
+    width: 12px;
+    height: 12px;
+    background: #4f46e5;
+    border-radius: 50%;
+    position: absolute;
+}
+.barras{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    height:100%;
+}
+.barra{
+    width:40px;
+    background:linear-gradient(
+        180deg,
+        #6D5BFF,
+        #4F46E5
+    );
+    border-radius:8px 8px 0 0;
+    transition: .3s;
+}
+.barra:hover{
+    transform: translateY(-6px);
+    filter: brightness(1.2); /* aumenta o brilho da cor*/
+}
+.b1{
+    height:60px;
+}
+
+.b2{
+    height:120px;
+}
+
+.b3{
+    height:90px;
+}
+
+.b4{
+    height:150px;
+}
+
+.b5{
+    height:110px;
+}
+
+.b6{
+    height:170px;
+}
+.linha{
+    width: 100%;
+    height: 3px;
+    background: #4f46e5;
+    margin-top: 90px;
+}
+.Categorias{
+
+    display:flex;
+    margin-top: 40px;
+    margin-left: 70px;
+    flex-wrap:wrap;
+    gap:20px;
+    box-sizing: 0 8px 25px rgba(0,0,0,.08);
+    transition: .3s;
+
+}
+
+.Categoria{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width:136px;
+    background: #fff;
+    border:2px solid rgb(255, 255, 255);
+    padding:20px;
+    border-radius:15px;
+}
+.Categoria:hover{
+    box-shadow: 0 18px 35px rgba(0,0,0,.15);
+    transform: translateY(-8px);
+}
+.Categoria h3{
+    margin: 0;
+    margin-bottom: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #666;
+}
+.Categoria h2{
+    margin:0;
+    font-size:25px;
+    font-weight:700;
+    color:#111;
+}
+.DICAS{
+    display:flex;
+    margin-top: 40px;
+    margin-left: 29px;
+    gap:30px;
+
+}
+
+.DICA{
+    
+    justify-content: center;
+    background: #fff;
+    width:200px;
+    border:2px solid rgb(255, 255, 255);
+    border-radius: 20px;
+    text-align: center;
+    padding:10px;
+    margin-left: -10px;
+
+}
+.DICAS .DICA:HOVER{
+    transition: scale(1.1, 1.1);
+}
+.DICAS:HOVER > .DICA:not(:hover){
+    filter: blur(4px);
+    transition: scale(0.9, 0.9);
+}
+.DICA:HOVER{
+    box-shadow: 0 18px 35px rgba(0,0,0,.15);
+    transform: translateY(-8px);
+}
+.LadoDireito{
+ width: 30%;
+ background: white;
+ padding: 20px;
+ border-radius: 28px;
+ box-shadow: 0 12px 35px rgba(0,0,0,.08);
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+}
+.Conexao{
+    background: white;
+    border: none;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    display: flex;
+    flex-direction: column;
+    
+}
+.conexaoo{
+    text-align: left;
+    margin-top: -14px;
+    color: black;
+    padding: 1px;
+}
+.banco{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    margin-top: 12px;
+    background: #f8f8ff;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: .25s;
+}
+.banco:hover{
+    background: #ececff;
+    transform: translateX(6px);
+}
+.CONTA{
+    background: white;
+    border: none;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+
+.conta{
+    display:block;
+}
+
+.conta h2{
+    margin:0;
+}
+
+.conta p{
+    margin-top:8px;
+}
+
+.perfil{
+    text-align:center;
+}
+
+.perfil h3{
+    margin:16px 0 4px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.perfil span{
+    display:inline-block;
+    margin-top:8px;
+    background:#4F46E5;
+    color:white;
+    padding:6px 14px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.foto-perfil{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+    border: 4px solid #fff;
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    transition: .3s;
+}
+.foto-perfil:hover{
+    transform: scale(1.08);
+}
+.comunidade{
+    background: white;
+    border: none;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+
+.comunidade p{
+    margin: 0;
+    color: black;
+}
+
+.item-lista{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    margin-top: 12px;
+    background: #f8f8ff;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: .25s;
+}
+.item-lista:hover{
+    background: #ececff;
+    transform: translateX(6px);
+}
+
+.Tema{
+    background: white;
+    border: none;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+.tema-tela{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f8ff;
+  padding: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: .25s;
+}
+.tema-tela:hover{
+    background: #ececff;
+    transform: translateX(6px);
+}
+.text-tema{
+    text-align: center;
+    border: 0;
+    border-top: 20px;
+    padding-top: 10px;
+    margin: 4%;
+}
+.Conexao h2,
+.CONTA h2,
+.comunidade h2,
+.Tema h2{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+}
+.ativo{
+    background: #4F46E5;
+    color:white;
+}
+.info-banco{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.status{
+    font-size: 14px;
+    font-weight: bold;
+}
+.conectado{
+    color: #22c55e;
+}
+.desconectado{
+    color: #ef4444;
+}
+.infos-perfil{
+    width: 100%;
+    margin-top: 25px;
+}
+.info{
+    display: flex;
+    flex-direction: column;
+    text-align: left 5px;
+    background: #f8f8ff;
+    padding: 15px;
+    border-radius: 12px;
+}
+.info small{
+    color: #888;
+    font-size: 12px;
+}
+.info strong{
+    margin-top: 5px;
+    font-size: 15px;
+}
+.editar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:15px;
+    background:#F8F8FF;
+    padding:15px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.25s;
+}
+.editar:hover{
+    background: #ececff;
+    transform: translateX(6px);
+}
+.item-esquerda{
+    display:flex;
+    align-items: center;
+    gap: 12px;
+}
+.item-esquerda i{
+    color:#4F46E5;
+    font-size:12px;
+}
+.item-esquerda i:last-child{
+    transition: .25s;
+}
+.item-esquerda:hover i:last-child{
+    transform: translateX(6px);
+}
+.Conexao,
+.CONTA,
+.comunidade,
+.Tema{
+    transition: .3s;
+}
+
+.Conexao:hover,
+.CONTA:hover,
+.comunidade:hover,
+.Tema:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,.12);
+}
+
+/* dark mode*/
+
+/* Base do modo dark */
+body.dark {
+    background: #0f172a;
+    color: white;
+}
+
+body.dark .dashboard {
+    color: white;
+}
+body.dark .ini,
+body.dark .LadoDireito{
+    background: #0f172a;
+}
+/* Cards e blocos com fundo elevado */
+body.dark .card,
+body.dark .grafico,
+body.dark .Categoria,
+body.dark .DICA,
+body.dark .Conexao,
+body.dark .CONTA,
+body.dark .comunidade,
+body.dark .Tema {
+    background: #1E293B;
+    color: white;
+}
+
+/* Textos padrão */
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark p {
+    color: white;
+}
+
+/* Itens internos com fundo mais claro */
+body.dark .banco,
+body.dark .item-lista,
+body.dark .tema-tela {
+    background: #334155;
+}
+
+body.dark .grafico-area {
+    background: #0F172A;
+}
+
+/* Categoria */
+body.dark .Categoria h2 {
+    color: white;
+}
+
+body.dark .Categoria h3 {
+    color: #cbd5e1;
+}
+
+/* Início */
+body.dark .Inicio h1 {
+    color: white;
+}
+
+body.dark .Inicio p {
+    color: #bdbdbd;
+}
+
+/* Resumo */
+body.dark .resumo h2 {
+    color: white;
+}
+body.dark .info{
+    background: #334155;
+}
+body.dark .info small{
+    color: #94a3b8;
+}
+body.dark .info strong{
+    color: white;
+}
+body.dark .editar{
+    background: #334155;
+}
+body.dark .editar span{
+    color: white;
+}
+body.dark .info strong{
+    color: white;
+}
