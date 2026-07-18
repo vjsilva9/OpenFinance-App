@@ -499,8 +499,44 @@ body{
     box-shadow: 0 20px 40px rgba(0,0,0,.12);
 }
 
-/* dark mode*/
+#btnReceber{
+    margin: 20px 0 0 50px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    background:#4F46E5;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
 
+}
+
+#btnReceber:hover{
+    transform: translateY(-4x);
+    background: #38ca47;
+}
+
+#btnDespesa{
+    margin: 20px 0 0 50px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    background:#4F46E5;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+}
+
+#btnDespesa:hover{
+    transform:translateY(-4px);
+    background:#dc2626;
+}
+
+/* dark mode*/
 /* Base do modo dark */
 body.dark {
     background: #0f172a;
