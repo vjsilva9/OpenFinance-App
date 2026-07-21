@@ -1,3 +1,4 @@
+
 @keyframes crescer{
     from{
         transform: scaleX(0);
@@ -24,7 +25,59 @@ body{
 .Inicio{
     color:black;
 }
-
+.Inicio{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.Inicio-acoes{
+    display: flex;
+    padding: 9px;
+    gap: 12px;
+    align-items: center;
+}
+.seletor-mes{
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 10px 16px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.05);
+}
+.btn-notificacao{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #666;
+}
+body.dark .seletor-mes,
+body.dark .btn-notificacao{
+    background: #1E293B;
+    border-color: #334155;
+    color: #fff;
+}
+.toggle-saldo{
+    font-size: 14px;
+    color: #999;
+    margin-left: 8px;
+    cursor: pointer;
+}
+.valor-oculto{
+    filter: blur(8px);
+    user-select: none;
+}
 .Inicio h1{
     color:black;
 }
@@ -201,7 +254,7 @@ body{
     justify-content: center;
     width:136px;
     background: #fff;
-    border:2px solid rgb(255, 255, 255);
+    border:none;
     padding:20px;
     border-radius:15px;
 }
@@ -222,6 +275,45 @@ body{
     font-weight:700;
     color:#111;
 }
+.progresso-categoria{
+    width: 100%;
+    height: 6px;
+    background: #eee;
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+.progresso-fill{
+    height: 100%;
+    background: linear-gradient(90deg, #6D5BFF, #4F46E5);
+    border-radius: 10px;
+    width: 0%;
+    transition: width .6s ease;
+}
+body.dark .progresso-categoria{ background: #334155; }
+.progresso-meta{
+    width: 100%;
+    height: 6px;
+    background: #eee;
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+.progresso-meta-fill{
+    height: 100%;
+    background: linear-gradient(90deg, #6D5BFF, #4F46E5);
+    border-radius: 10px;
+}
+.meta-valores{
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+}
+body.dark .progresso-meta{ background: #334155; }
+body.dark .meta-valores{ color: #cbd5e1; }
+
 .DICAS{
     display:flex;
     margin-top: 40px;
@@ -235,7 +327,7 @@ body{
     justify-content: center;
     background: #fff;
     width:200px;
-    border:2px solid rgb(255, 255, 255);
+    border:none;
     border-radius: 20px;
     text-align: center;
     padding:10px;
@@ -294,6 +386,15 @@ body{
     background: #ececff;
     transform: translateX(6px);
 }
+.banco-adicionar{
+    border: 2px dashed #ddd;
+    background: transparent;
+    justify-content: center;
+}
+.banco-adicionar .info-banco{ color: #4F46E5; }
+.banco-adicionar:hover{ background: #f8f8ff; }
+body.dark .banco-adicionar{ border-color: #334155; }
+
 .CONTA{
     background: white;
     border: none;
@@ -499,47 +600,9 @@ body{
     box-shadow: 0 20px 40px rgba(0,0,0,.12);
 }
 
-#btnReceber{
-    margin: 20px 0 0 50px;
-    padding: 15px 25px;
-    border: none;
-    border-radius: 12px;
-    color: white;
-    background:#4F46E5;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: .3s;
-
-}
-
-#btnReceber:hover{
-    transform: translateY(-4x);
-    background: #38ca47;
-}
-
-#btnDespesa{
-    margin: 20px 0 0 50px;
-    padding: 15px 25px;
-    border: none;
-    border-radius: 12px;
-    color: white;
-    background:#4F46E5;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: .3s;
-}
-
-#btnDespesa:hover{
-    transform:translateY(-4px);
-    background:#dc2626;
-}
-
-/* dark mode*/
-/* Base do modo dark */
+/* dark mode - Black Light */
 body.dark {
-    background: #0f172a;
+    background: #000000;
     color: white;
 }
 
@@ -548,7 +611,86 @@ body.dark .dashboard {
 }
 body.dark .ini,
 body.dark .LadoDireito{
-    background: #0f172a;
+    background: #000000;
+}
+
+.mobile-nav{
+    position: fixed;
+    left: 50%;
+    bottom: calc(18px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 8px;
+    border-radius: 34px;
+    background: rgba(255,255,255,.55);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255,255,255,.6);
+    box-shadow: 0 8px 32px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.6);
+    z-index: 300;
+}
+body.dark .mobile-nav{
+    background: rgba(17,17,17,.6);
+    border: 1px solid rgba(255,68,68,.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
+}
+.nav-item{
+    width: 46px;
+    height: 46px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    color: #666;
+    cursor: pointer;
+    transition: .25s;
+}
+body.dark .nav-item{ color: #888; }
+.nav-item.active{
+    background: #4F46E5;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(79,70,229,.45);
+}
+body.dark .nav-item.active{
+    background: #ff4444;
+    box-shadow: 0 6px 16px rgba(255,68,68,.45);
+}
+.nav-item:active{ transform: scale(.9); }
+
+@media (max-width: 768px){
+    .mobile-nav{ display: flex; }
+}
+@media (max-width: 768px){
+    .btn-fechar-painel{
+        display: flex;
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        background: #f8f8ff;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #666;
+    }
+}
+@media (min-width: 769px){
+    .btn-fechar-painel{ display: none; }
+}
+body.dark .btn-fechar-painel{
+    background: #262626;
+    color: #ff4444;
+}
+.painel-mobile{
+    padding-bottom: 100px;
 }
 /* Cards e blocos com fundo elevado */
 body.dark .card,
@@ -559,8 +701,9 @@ body.dark .Conexao,
 body.dark .CONTA,
 body.dark .comunidade,
 body.dark .Tema {
-    background: #1E293B;
+    background: #111111;
     color: white;
+    border: 1px solid rgba(255,68,68,.15);
 }
 
 /* Textos padrão */
@@ -571,54 +714,189 @@ body.dark p {
     color: white;
 }
 
+/* Títulos de seção ganham o vermelho de destaque */
+body.dark .resumo h2,
+body.dark .grafico h2,
+body.dark .Categorias > h2,
+body.dark .DICA h3,
+body.dark .Conexao h2,
+body.dark .CONTA h2,
+body.dark .comunidade h2,
+body.dark .Tema h2 {
+    color: #ff4444;
+}
+
+/* Variação percentual dos cards (era verde, agora vermelho) */
+body.dark .card p{
+    color: #ff4444;
+}
+
 /* Itens internos com fundo mais claro */
 body.dark .banco,
 body.dark .item-lista,
 body.dark .tema-tela {
-    background: #334155;
+    background: #1a1a1a;
+    border: 1px solid rgba(255,68,68,.12);
 }
 
 body.dark .grafico-area {
-    background: #0F172A;
+    background: #0a0a0a;
+}
+
+/* Gráfico de barras */
+body.dark .barra{
+    background: linear-gradient(180deg, #ff6b6b, #b91c1c);
+}
+body.dark .linha{
+    background: #ff4444;
+}
+body.dark .ponto{
+    background: #ff4444;
 }
 
 /* Categoria */
-body.dark .Categoria h2 {
-    color: white;
-}
-
-body.dark .Categoria h3 {
-    color: #cbd5e1;
-}
+body.dark .Categoria h2 { color: white; }
+body.dark .Categoria h3 { color: #999; }
 
 /* Início */
-body.dark .Inicio h1 {
-    color: white;
+body.dark .Inicio h1 { color: white; }
+body.dark .Inicio p { color: #999; }
+
+/* Conta / Info */
+body.dark .info{ background: #1a1a1a; }
+body.dark .info small{ color: #888; }
+body.dark .info strong{ color: white; }
+body.dark .editar{ background: #1a1a1a; }
+body.dark .editar span{ color: white; }
+
+/* Badge Premium */
+body.dark .perfil span{
+    background: transparent;
+    border: 1px solid #ff4444;
+    color: #ff4444;
 }
 
-body.dark .Inicio p {
-    color: #bdbdbd;
+/* Seleção de tema ativa: outline vermelho, não preenchido */
+body.dark .ativo{
+    background: transparent;
+    border: 1px solid #ff4444;
+    color: #ff4444;
+}
+body.dark .ativo i{
+    color: #ff4444;
 }
 
-/* Resumo */
-body.dark .resumo h2 {
-    color: white;
+/* Seletor de mês e sino */
+body.dark .seletor-mes,
+body.dark .btn-notificacao{
+    background: #111111;
+    border: 1px solid rgba(255,68,68,.3);
+    color: #ff4444;
 }
-body.dark .info{
-    background: #334155;
+
+/* Barras de progresso das categorias */
+body.dark .progresso-categoria{
+    background: #262626;
 }
-body.dark .info small{
-    color: #94a3b8;
+body.dark .progresso-fill{
+    background: linear-gradient(90deg, #ff6b6b, #b91c1c);
 }
-body.dark .info strong{
-    color: white;
+
+/* Barra de progresso da meta */
+body.dark .progresso-meta{
+    background: #262626;
 }
-body.dark .editar{
-    background: #334155;
+body.dark .progresso-meta-fill{
+    background: linear-gradient(90deg, #ff6b6b, #b91c1c);
 }
-body.dark .editar span{
-    color: white;
+body.dark .meta-valores{
+    color: #999;
 }
-body.dark .info strong{
-    color: white;
+
+/* Adicionar banco */
+body.dark .banco-adicionar{
+    border: 2px dashed #ff4444;
+}
+body.dark .banco-adicionar .info-banco{
+    color: #ff4444;
+}
+body.dark .banco-adicionar:hover{
+    background: rgba(255,68,68,.08);
+}
+
+/* Ícone de mostrar/ocultar saldo */
+body.dark .toggle-saldo{
+    color: #ff4444;
+}
+/* ===== TABLET (≤1024px) ===== */
+@media (max-width: 1024px){
+    .dashboard{
+        flex-direction: column;
+        padding: 16px;
+        gap: 16px;
+    }
+    .ini,
+    .LadoDireito{
+        width: 100%;
+    }
+}
+/* ===== MOBILE (≤768px) ===== */
+@media (max-width: 768px){
+    .cards{
+        margin: 0;
+        padding: 4px 4px 8px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+    .cards::-webkit-scrollbar{ display: none; }
+
+    .card{
+        flex: 0 0 160px;
+        width: 160px;
+        scroll-snap-align: start;
+    }
+}
+@media (max-width: 768px){
+    .resumo{
+        margin-left: 0;
+        margin-top: 24px;
+    }
+
+    .grafico{
+        width: 100%;
+        margin-left: 0;
+        padding: 18px;
+    }
+
+    .Categorias{
+        margin-left: 0;
+        gap: 12px;
+        justify-content: space-between;
+    }
+
+    .Categoria{
+        width: calc(50% - 6px); /* 2 colunas */
+    }
+
+    .DICAS{
+        margin-left: 0;
+        overflow-x: auto;
+        padding-bottom: 8px;
+    }
+    .DICA{
+        flex: 0 0 200px;
+        margin-left: 0;
+    }
+}
+@media (max-width: 480px){
+    .Inicio{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+    .Inicio-acoes{
+        width: 100%;
+        justify-content: space-between;
+    }
 }
