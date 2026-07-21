@@ -1,4 +1,3 @@
-
 @keyframes crescer{
     from{
         transform: scaleX(0);
@@ -24,11 +23,12 @@ body{
 }
 .Inicio{
     color:black;
-}
-.Inicio{
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+}
+.Inicio h1{
+    color:black;
 }
 .Inicio-acoes{
     display: flex;
@@ -78,10 +78,6 @@ body.dark .btn-notificacao{
     filter: blur(8px);
     user-select: none;
 }
-.Inicio h1{
-    color:black;
-}
-
 
 .resumo{
     color:black;
@@ -99,16 +95,12 @@ body.dark .btn-notificacao{
     margin-left: 50px;
     margin-right:70px;
 }
-.cards :hover{
+.cards .card:hover{
     transform: translateY(-8px);
-    
 }
 .card{
-
-    border:2px solid black;
     width:230px;
     padding:20px;
-    border-radius:15px;
     border-radius: 10% 25%;
     background:white;
     border:none;
@@ -176,10 +168,6 @@ body.dark .btn-notificacao{
     color: #000;
     font-size: 14px;
 }
-.meses:hover{
-    transform: translateY(-8px);
-    box-shadow: 0 18px 35px rgba(0,0,0,.15);
-}
 .ponto{
     width: 12px;
     height: 12px;
@@ -205,31 +193,15 @@ body.dark .btn-notificacao{
 }
 .barra:hover{
     transform: translateY(-6px);
-    filter: brightness(1.2); /* aumenta o brilho da cor*/
+    filter: brightness(1.2);
 }
-.b1{
-    height:60px;
-}
+.b1{ height:60px; }
+.b2{ height:120px; }
+.b3{ height:90px; }
+.b4{ height:150px; }
+.b5{ height:110px; }
+.b6{ height:170px; }
 
-.b2{
-    height:120px;
-}
-
-.b3{
-    height:90px;
-}
-
-.b4{
-    height:150px;
-}
-
-.b5{
-    height:110px;
-}
-
-.b6{
-    height:170px;
-}
 .linha{
     width: 100%;
     height: 3px;
@@ -237,15 +209,12 @@ body.dark .btn-notificacao{
     margin-top: 90px;
 }
 .Categorias{
-
     display:flex;
     margin-top: 40px;
     margin-left: 70px;
     flex-wrap:wrap;
     gap:20px;
-    box-sizing: 0 8px 25px rgba(0,0,0,.08);
     transition: .3s;
-
 }
 
 .Categoria{
@@ -291,6 +260,7 @@ body.dark .btn-notificacao{
     transition: width .6s ease;
 }
 body.dark .progresso-categoria{ background: #334155; }
+
 .progresso-meta{
     width: 100%;
     height: 6px;
@@ -319,11 +289,9 @@ body.dark .meta-valores{ color: #cbd5e1; }
     margin-top: 40px;
     margin-left: 29px;
     gap:30px;
-
 }
 
 .DICA{
-    
     justify-content: center;
     background: #fff;
     width:200px;
@@ -332,19 +300,15 @@ body.dark .meta-valores{ color: #cbd5e1; }
     text-align: center;
     padding:10px;
     margin-left: -10px;
-
 }
-.DICAS .DICA:HOVER{
-    transition: scale(1.1, 1.1);
-}
-.DICAS:HOVER > .DICA:not(:hover){
-    filter: blur(4px);
-    transition: scale(0.9, 0.9);
-}
-.DICA:HOVER{
+.DICA:hover{
     box-shadow: 0 18px 35px rgba(0,0,0,.15);
     transform: translateY(-8px);
 }
+.DICAS:hover > .DICA:not(:hover){
+    filter: blur(4px);
+}
+
 .LadoDireito{
  width: 30%;
  background: white;
@@ -363,7 +327,7 @@ body.dark .meta-valores{ color: #cbd5e1; }
     box-shadow: 0 8px 25px rgba(0,0,0,.08);
     display: flex;
     flex-direction: column;
-    
+    position: relative;
 }
 .conexaoo{
     text-align: left;
@@ -401,30 +365,18 @@ body.dark .banco-adicionar{ border-color: #334155; }
     border-radius: 20px;
     padding: 25px;
     box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    position: relative;
 }
+.conta{ display:block; }
+.conta h2{ margin:0; }
+.conta p{ margin-top:8px; }
 
-.conta{
-    display:block;
-}
-
-.conta h2{
-    margin:0;
-}
-
-.conta p{
-    margin-top:8px;
-}
-
-.perfil{
-    text-align:center;
-}
-
+.perfil{ text-align:center; }
 .perfil h3{
     margin:16px 0 4px;
     font-size: 22px;
     font-weight: 700;
 }
-
 .perfil span{
     display:inline-block;
     margin-top:8px;
@@ -435,7 +387,6 @@ body.dark .banco-adicionar{ border-color: #334155; }
     font-size:13px;
     font-weight:600;
 }
-
 .foto-perfil{
     width:60px;
     height:60px;
@@ -445,22 +396,20 @@ body.dark .banco-adicionar{ border-color: #334155; }
     box-shadow: 0 8px 20px rgba(0,0,0,.15);
     transition: .3s;
 }
-.foto-perfil:hover{
-    transform: scale(1.08);
-}
+.foto-perfil:hover{ transform: scale(1.08); }
+
 .comunidade{
     background: white;
     border: none;
     border-radius: 20px;
     padding: 30px;
     box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    position: relative;
 }
-
 .comunidade p{
     margin: 0;
     color: black;
 }
-
 .item-lista{
     display: flex;
     justify-content: space-between;
@@ -483,6 +432,7 @@ body.dark .banco-adicionar{ border-color: #334155; }
     border-radius: 20px;
     padding: 25px;
     box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    position: relative;
 }
 .tema-tela{
   display: flex;
@@ -501,7 +451,6 @@ body.dark .banco-adicionar{ border-color: #334155; }
 .text-tema{
     text-align: center;
     border: 0;
-    border-top: 20px;
     padding-top: 10px;
     margin: 4%;
 }
@@ -529,20 +478,12 @@ body.dark .banco-adicionar{ border-color: #334155; }
     font-size: 14px;
     font-weight: bold;
 }
-.conectado{
-    color: #22c55e;
-}
-.desconectado{
-    color: #ef4444;
-}
-.infos-perfil{
-    width: 100%;
-    margin-top: 25px;
-}
+.conectado{ color: #22c55e; }
+.desconectado{ color: #ef4444; }
+
 .info{
     display: flex;
     flex-direction: column;
-    text-align: left 5px;
     background: #f8f8ff;
     padding: 15px;
     border-radius: 12px;
@@ -579,19 +520,15 @@ body.dark .banco-adicionar{ border-color: #334155; }
     color:#4F46E5;
     font-size:12px;
 }
-.item-esquerda i:last-child{
-    transition: .25s;
-}
-.item-esquerda:hover i:last-child{
-    transform: translateX(6px);
-}
+.item-esquerda i:last-child{ transition: .25s; }
+.item-esquerda:hover i:last-child{ transform: translateX(6px); }
+
 .Conexao,
 .CONTA,
 .comunidade,
 .Tema{
     transition: .3s;
 }
-
 .Conexao:hover,
 .CONTA:hover,
 .comunidade:hover,
@@ -600,20 +537,97 @@ body.dark .banco-adicionar{ border-color: #334155; }
     box-shadow: 0 20px 40px rgba(0,0,0,.12);
 }
 
-/* dark mode - Black Light */
+/* ================= DARK MODE - Black Light ================= */
 body.dark {
     background: #000000;
     color: white;
 }
+body.dark .dashboard { color: white; }
+body.dark .ini,
+body.dark .LadoDireito{ background: #000000; }
 
-body.dark .dashboard {
+body.dark .card,
+body.dark .grafico,
+body.dark .Categoria,
+body.dark .DICA,
+body.dark .Conexao,
+body.dark .CONTA,
+body.dark .comunidade,
+body.dark .Tema {
+    background: #111111;
+    color: white;
+    border: 1px solid rgba(255,68,68,.15);
+}
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark p {
     color: white;
 }
-body.dark .ini,
-body.dark .LadoDireito{
-    background: #000000;
+
+body.dark .resumo h2,
+body.dark .grafico h2,
+body.dark .Categorias > h2,
+body.dark .DICA h3,
+body.dark .Conexao h2,
+body.dark .CONTA h2,
+body.dark .comunidade h2,
+body.dark .Tema h2 {
+    color: #ff4444;
 }
 
+body.dark .card p{ color: #ff4444; }
+
+body.dark .banco,
+body.dark .item-lista,
+body.dark .tema-tela {
+    background: #1a1a1a;
+    border: 1px solid rgba(255,68,68,.12);
+}
+
+body.dark .grafico-area { background: #0a0a0a; }
+
+body.dark .barra{ background: linear-gradient(180deg, #ff6b6b, #b91c1c); }
+body.dark .linha{ background: #ff4444; }
+body.dark .ponto{ background: #ff4444; }
+
+body.dark .Categoria h2 { color: white; }
+body.dark .Categoria h3 { color: #999; }
+
+body.dark .Inicio h1 { color: white; }
+body.dark .Inicio p { color: #999; }
+
+body.dark .info{ background: #1a1a1a; }
+body.dark .info small{ color: #888; }
+body.dark .info strong{ color: white; }
+body.dark .editar{ background: #1a1a1a; }
+body.dark .editar span{ color: white; }
+
+body.dark .perfil span{
+    background: transparent;
+    border: 1px solid #ff4444;
+    color: #ff4444;
+}
+
+body.dark .ativo{
+    background: transparent;
+    border: 1px solid #ff4444;
+    color: #ff4444;
+}
+body.dark .ativo i{ color: #ff4444; }
+
+body.dark .progresso-fill{ background: linear-gradient(90deg, #ff6b6b, #b91c1c); }
+body.dark .progresso-meta-fill{ background: linear-gradient(90deg, #ff6b6b, #b91c1c); }
+body.dark .meta-valores{ color: #999; }
+
+body.dark .banco-adicionar{ border-color: #ff4444; }
+body.dark .banco-adicionar .info-banco{ color: #ff4444; }
+body.dark .banco-adicionar:hover{ background: rgba(255,68,68,.08); }
+
+body.dark .toggle-saldo{ color: #ff4444; }
+
+/* ================= NAV FLUTUANTE (glass effect) ================= */
 .mobile-nav{
     position: fixed;
     left: 50%;
@@ -662,10 +676,142 @@ body.dark .nav-item.active{
 }
 .nav-item:active{ transform: scale(.9); }
 
-@media (max-width: 768px){
-    .mobile-nav{ display: flex; }
+/* Overlay escurecido atrás dos painéis */
+.overlay-mobile{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+    z-index: 250;
 }
+.overlay-mobile.ativo{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* =====================================================
+   RESPONSIVO
+   Desktop: layout original, sem alterações.
+   Tablet (≤1024px): dashboard empilha em coluna única.
+   Mobile (≤768px): cards/categorias/dicas viram GRID
+   (blocos "encaixados"), não mais lista com scroll.
+   ===================================================== */
+
+/* ===== TABLET (≤1024px) ===== */
+@media (max-width: 1024px){
+    .dashboard{
+        flex-direction: column;
+        padding: 16px;
+        gap: 16px;
+    }
+    .ini,
+    .LadoDireito{
+        width: 100%;
+    }
+}
+
+/* ===== MOBILE (≤768px) ===== */
 @media (max-width: 768px){
+
+    .ini{
+        padding: 20px 16px 140px; /* espaço extra embaixo pra nav flutuante não cobrir conteúdo */
+    }
+
+    /* Header */
+    .Inicio-acoes{ padding: 0; }
+
+    .resumo{
+        margin-left: 0;
+        margin-top: 28px;
+        margin-bottom: 16px;
+    }
+
+    /* Cards: grid 2x2, cada um no seu quadrado */
+    .cards{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin: 0;
+    }
+    .card{
+        width: auto;
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    /* Gráfico ocupa a largura toda */
+    .grafico{
+        width: 100%;
+        margin-left: 0;
+        margin-top: 24px;
+        padding: 20px;
+    }
+
+    /* Categorias: grid 2 colunas, tiles quadrados e alinhados */
+    .Categorias{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-left: 0;
+        margin-top: 28px;
+        gap: 12px;
+    }
+    .Categoria{
+        width: auto;
+        aspect-ratio: 1 / 0.85;
+        justify-content: center;
+    }
+
+    /* Dicas: Meta em destaque (linha inteira), as outras duas dividem espaço */
+    .DICAS{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "meta meta"
+            "dica invest";
+        grid-column: 1 / -1;
+        margin-left: 0;
+        gap: 12px;
+    }
+    .DICA{
+        width: auto;
+        margin-left: 0;
+    }
+    .DICA.meta{ grid-area: meta; }
+    .DICAS .DICA:nth-of-type(2){ grid-area: dica; }
+    .DICAS .DICA:nth-of-type(3){ grid-area: invest; }
+
+    /* Nav flutuante visível só no mobile */
+    .mobile-nav{ display: flex; }
+
+    /* LadoDireito vira os painéis deslizantes (bottom sheets) */
+    .LadoDireito{
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+        width: auto;
+        gap: 0;
+    }
+
+    .painel-mobile{
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-height: 80vh;
+        overflow-y: auto;
+        border-radius: 24px 24px 0 0;
+        transform: translateY(110%);
+        transition: transform .35s ease;
+        z-index: 260;
+        box-shadow: 0 -10px 40px rgba(0,0,0,.2);
+        padding-bottom: 120px;
+    }
+    .painel-mobile.aberto{
+        transform: translateY(0);
+    }
+
     .btn-fechar-painel{
         display: flex;
         position: absolute;
@@ -681,214 +827,17 @@ body.dark .nav-item.active{
         cursor: pointer;
         color: #666;
     }
+    body.dark .btn-fechar-painel{
+        background: #262626;
+        color: #ff4444;
+    }
 }
+
 @media (min-width: 769px){
     .btn-fechar-painel{ display: none; }
 }
-body.dark .btn-fechar-painel{
-    background: #262626;
-    color: #ff4444;
-}
-.painel-mobile{
-    padding-bottom: 100px;
-}
-/* Cards e blocos com fundo elevado */
-body.dark .card,
-body.dark .grafico,
-body.dark .Categoria,
-body.dark .DICA,
-body.dark .Conexao,
-body.dark .CONTA,
-body.dark .comunidade,
-body.dark .Tema {
-    background: #111111;
-    color: white;
-    border: 1px solid rgba(255,68,68,.15);
-}
 
-/* Textos padrão */
-body.dark h1,
-body.dark h2,
-body.dark h3,
-body.dark p {
-    color: white;
-}
-
-/* Títulos de seção ganham o vermelho de destaque */
-body.dark .resumo h2,
-body.dark .grafico h2,
-body.dark .Categorias > h2,
-body.dark .DICA h3,
-body.dark .Conexao h2,
-body.dark .CONTA h2,
-body.dark .comunidade h2,
-body.dark .Tema h2 {
-    color: #ff4444;
-}
-
-/* Variação percentual dos cards (era verde, agora vermelho) */
-body.dark .card p{
-    color: #ff4444;
-}
-
-/* Itens internos com fundo mais claro */
-body.dark .banco,
-body.dark .item-lista,
-body.dark .tema-tela {
-    background: #1a1a1a;
-    border: 1px solid rgba(255,68,68,.12);
-}
-
-body.dark .grafico-area {
-    background: #0a0a0a;
-}
-
-/* Gráfico de barras */
-body.dark .barra{
-    background: linear-gradient(180deg, #ff6b6b, #b91c1c);
-}
-body.dark .linha{
-    background: #ff4444;
-}
-body.dark .ponto{
-    background: #ff4444;
-}
-
-/* Categoria */
-body.dark .Categoria h2 { color: white; }
-body.dark .Categoria h3 { color: #999; }
-
-/* Início */
-body.dark .Inicio h1 { color: white; }
-body.dark .Inicio p { color: #999; }
-
-/* Conta / Info */
-body.dark .info{ background: #1a1a1a; }
-body.dark .info small{ color: #888; }
-body.dark .info strong{ color: white; }
-body.dark .editar{ background: #1a1a1a; }
-body.dark .editar span{ color: white; }
-
-/* Badge Premium */
-body.dark .perfil span{
-    background: transparent;
-    border: 1px solid #ff4444;
-    color: #ff4444;
-}
-
-/* Seleção de tema ativa: outline vermelho, não preenchido */
-body.dark .ativo{
-    background: transparent;
-    border: 1px solid #ff4444;
-    color: #ff4444;
-}
-body.dark .ativo i{
-    color: #ff4444;
-}
-
-/* Seletor de mês e sino */
-body.dark .seletor-mes,
-body.dark .btn-notificacao{
-    background: #111111;
-    border: 1px solid rgba(255,68,68,.3);
-    color: #ff4444;
-}
-
-/* Barras de progresso das categorias */
-body.dark .progresso-categoria{
-    background: #262626;
-}
-body.dark .progresso-fill{
-    background: linear-gradient(90deg, #ff6b6b, #b91c1c);
-}
-
-/* Barra de progresso da meta */
-body.dark .progresso-meta{
-    background: #262626;
-}
-body.dark .progresso-meta-fill{
-    background: linear-gradient(90deg, #ff6b6b, #b91c1c);
-}
-body.dark .meta-valores{
-    color: #999;
-}
-
-/* Adicionar banco */
-body.dark .banco-adicionar{
-    border: 2px dashed #ff4444;
-}
-body.dark .banco-adicionar .info-banco{
-    color: #ff4444;
-}
-body.dark .banco-adicionar:hover{
-    background: rgba(255,68,68,.08);
-}
-
-/* Ícone de mostrar/ocultar saldo */
-body.dark .toggle-saldo{
-    color: #ff4444;
-}
-/* ===== TABLET (≤1024px) ===== */
-@media (max-width: 1024px){
-    .dashboard{
-        flex-direction: column;
-        padding: 16px;
-        gap: 16px;
-    }
-    .ini,
-    .LadoDireito{
-        width: 100%;
-    }
-}
-/* ===== MOBILE (≤768px) ===== */
-@media (max-width: 768px){
-    .cards{
-        margin: 0;
-        padding: 4px 4px 8px;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-    }
-    .cards::-webkit-scrollbar{ display: none; }
-
-    .card{
-        flex: 0 0 160px;
-        width: 160px;
-        scroll-snap-align: start;
-    }
-}
-@media (max-width: 768px){
-    .resumo{
-        margin-left: 0;
-        margin-top: 24px;
-    }
-
-    .grafico{
-        width: 100%;
-        margin-left: 0;
-        padding: 18px;
-    }
-
-    .Categorias{
-        margin-left: 0;
-        gap: 12px;
-        justify-content: space-between;
-    }
-
-    .Categoria{
-        width: calc(50% - 6px); /* 2 colunas */
-    }
-
-    .DICAS{
-        margin-left: 0;
-        overflow-x: auto;
-        padding-bottom: 8px;
-    }
-    .DICA{
-        flex: 0 0 200px;
-        margin-left: 0;
-    }
-}
+/* ===== MOBILE PEQUENO (≤480px) ===== */
 @media (max-width: 480px){
     .Inicio{
         flex-direction: column;
