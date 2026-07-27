@@ -229,6 +229,23 @@
 
 
         <div class="LadoDireito">
+            <div class="Cartoes painel-mobile" id="painelCartoes">
+
+                <button class="btn-fechar-painel"><i class="fa-solid fa-xmark"></i></button>
+
+                <div class="cartoes-topo">
+                    <h2><i class="fa-solid fa-credit-card"></i> Meus Cartões</h2>
+                    <div class="cartoes-nav">
+                        <button class="btn-cartao-nav" id="btnCartaoAnterior"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="btn-cartao-nav" id="btnCartaoProximo"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="cartoes-stack" id="cartoesStack">
+                    <!-- cartões injetados via JS -->
+                </div>
+                <div class="cartoes-dots" id="cartoesDots"></div>
+            </div>
+
             <div class="Conexao painel-mobile" id="painelConexao">
 
                 <button class="btn-fechar-painel"><i class="fa-solid fa-xmark"></i></button>
@@ -236,7 +253,7 @@
                 <h2><i class="fa-solid fa-building-columns"></i> Conexão</h2>
                 <p class="conexaoo">conecte seus bancos<br>e centralize suas informações</p>
         
-                <div class="banco">
+                <div class="banco" data-banco="Nubank">
                     <div class="info-banco">
                         <i class="fa-solid fa-building-columns"></i>
                         <span>Nubank</span>
@@ -244,7 +261,7 @@
                     <span class="status conectado">●</span>
                 </div>
 
-                <div class="banco">
+                <div class="banco" data-banco="Bradesco">
                     <div class="info-banco">
                         <i class="fa-solid fa-building-columns"></i>
                         <span>Bradesco</span>
@@ -252,7 +269,7 @@
                     <span class="status conectado">●</span>
                 </div>
 
-                <div class="banco">
+                <div class="banco" data-banco="Banco Pan">
                     <div class="info-banco">
                         <i class="fa-solid fa-building-columns"></i>
                         <span>Banco Pan</span>
@@ -260,7 +277,7 @@
                     <span class="status conectado">●</span>
                 </div>
 
-                <div class="banco">
+                <div class="banco" data-banco="Mercado Pago">
                     <div class="info-banco">
                         <i class="fa-solid fa-building-columns"></i>
                         <span>Mercado Pago</span>
@@ -364,8 +381,11 @@
 
     </div>
 
+    <div class="overlay-mobile" id="overlayMobile"></div>
+
     <nav class="mobile-nav">
         <button class="nav-item active" data-painel="inicio" aria-label="Início"><i class="fa-solid fa-house"></i></button>
+        <button class="nav-item" data-painel="painelCartoes" aria-label="Cartões"><i class="fa-solid fa-credit-card"></i></button>
         <button class="nav-item" data-painel="painelConexao" aria-label="Conexão"><i class="fa-solid fa-building-columns"></i></button>
         <button class="nav-item" data-painel="painelConta" aria-label="Conta"><i class="fa-solid fa-user"></i></button>
         <button class="nav-item" data-painel="painelComunidade" aria-label="Comunidade"><i class="fa-solid fa-users"></i></button>
