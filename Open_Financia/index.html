@@ -27,9 +27,14 @@
                         </p>
                     </div>
                     <div class="Inicio-acoes">
-                        <button class="seletor-mes">
-                            Maio de 2024 <i class="fa-solid fa-chevron-down"></i>
-                        </button>
+                        <div class="seletor-mes-wrapper">
+                            <button class="seletor-mes" id="btnSeletorMes">
+                                <span id="mesAtualTexto">Maio de 2024</span> <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-mes" id="dropdownMes">
+                                <!-- meses injetados via JS -->
+                            </div>
+                        </div>
                         <button class="btn-notificacao">
                             <i class="fa-regular fa-bell"></i>
                         </button>
@@ -115,14 +120,14 @@
                             <div class="barra b5"></div>
                             <div class="barra b6"></div>
                         </div>
-                                <div class="meses">
-                                    <span>Jan</span>
-                                    <span>Fev</span>
-                                    <span>Mar</span>
-                                    <span>Abr</span>
-                                    <span>Mai</span>
-                                    <span>Jun</span>
-                                </div>
+                </div>
+                <div class="meses">
+                    <span>Jan</span>
+                    <span>Fev</span>
+                    <span>Mar</span>
+                    <span>Abr</span>
+                    <span>Mai</span>
+                    <span>Jun</span>
                 </div>
             </div>
                
@@ -258,7 +263,10 @@
                         <i class="fa-solid fa-building-columns"></i>
                         <span>Nubank</span>
                     </div>
-                    <span class="status conectado">●</span>
+                    <div class="banco-acoes">
+                        <span class="status conectado">●</span>
+                        <button class="btn-remover-banco" title="Remover banco"><i class="fa-solid fa-trash"></i></button>
+                    </div>
                 </div>
 
                 <div class="banco" data-banco="Bradesco">
@@ -266,7 +274,10 @@
                         <i class="fa-solid fa-building-columns"></i>
                         <span>Bradesco</span>
                     </div>
-                    <span class="status conectado">●</span>
+                    <div class="banco-acoes">
+                        <span class="status conectado">●</span>
+                        <button class="btn-remover-banco" title="Remover banco"><i class="fa-solid fa-trash"></i></button>
+                    </div>
                 </div>
 
                 <div class="banco" data-banco="Banco Pan">
@@ -274,7 +285,10 @@
                         <i class="fa-solid fa-building-columns"></i>
                         <span>Banco Pan</span>
                     </div>
-                    <span class="status conectado">●</span>
+                    <div class="banco-acoes">
+                        <span class="status conectado">●</span>
+                        <button class="btn-remover-banco" title="Remover banco"><i class="fa-solid fa-trash"></i></button>
+                    </div>
                 </div>
 
                 <div class="banco" data-banco="Mercado Pago">
@@ -282,10 +296,13 @@
                         <i class="fa-solid fa-building-columns"></i>
                         <span>Mercado Pago</span>
                     </div>
-                    <span class="status conectado">●</span>
+                    <div class="banco-acoes">
+                        <span class="status conectado">●</span>
+                        <button class="btn-remover-banco" title="Remover banco"><i class="fa-solid fa-trash"></i></button>
+                    </div>
                 </div>
 
-                <div class="banco banco-adicionar">
+                <div class="banco banco-adicionar" id="btnAdicionarBanco">
                     <div class="info-banco">
                     <i class="fa-solid fa-plus"></i>
                     <span>Adicionar banco</span>
@@ -313,7 +330,7 @@
                         <strong>Hoje • 14:32 </strong>
                     </div>
                     
-                    <div class="editar">
+                    <div class="editar" id="btnEditarPerfil">
                         <span>Editar Perfil</span>
                         <i class="fa-solid fa-angle-right"></i>
                     </div>
@@ -328,7 +345,7 @@
                     <h2><i class="fa-solid fa-users"></i> Comunidade</h2>
                     <p class="comunidadee">Aprenda, compartilhe e cresça <br> financeiramente.</p>
 
-                <div class="item-lista">
+                <div class="item-lista" id="itemFeedComunidade">
                     <div class="item-esquerda">
                         <i class="fa-solid fa-comments"></i>
                         <span>Feed da Comunida</span>
@@ -337,7 +354,7 @@
 
                 </div>
                 
-                <div class="item-lista">
+                <div class="item-lista" id="itemTrabalheConosco">
                     <div class="item-esquerda">
                         <i class="fa-solid fa-comments"></i>
                         <span>Trabalha Conosco</span>
@@ -346,7 +363,7 @@
 
                 </div>
 
-                <div class="item-lista">
+                <div class="item-lista" id="itemVendaProdutos">
                     <div class="item-esquerda">
                         <i class="fa-solid fa-comments"></i>
                         <span>Venda de Produtos</span>
@@ -382,6 +399,148 @@
     </div>
 
     <div class="overlay-mobile" id="overlayMobile"></div>
+
+    <!-- ===== PÁGINA: FEED DA COMUNIDADE ===== -->
+    <div class="pagina-cheia" id="paginaFeed">
+        <div class="pagina-topo">
+            <button class="btn-voltar-pagina" data-fechar="paginaFeed"><i class="fa-solid fa-arrow-left"></i></button>
+            <h2><i class="fa-solid fa-comments"></i> Feed da Comunidade</h2>
+        </div>
+        <div class="pagina-conteudo">
+
+            <section class="secao-pagina">
+                <h3>💬 O que a comunidade está pedindo</h3>
+                <p class="secao-sub">Sugestões de melhorias para as próximas versões do app</p>
+                <div class="lista-comentarios" id="listaComentarios"></div>
+                <div class="novo-comentario">
+                    <textarea id="inputNovoComentario" class="campo-editar area-motivo" placeholder="Deixe sua sugestão para o app..."></textarea>
+                    <button class="btn-salvar-perfil" id="btnEnviarComentario">Enviar sugestão</button>
+                </div>
+            </section>
+
+            <section class="secao-pagina">
+                <h3>📈 Dicas de Investimento</h3>
+                <div class="grid-dicas" id="gridDicasInvestimento"></div>
+            </section>
+
+            <section class="secao-pagina">
+                <h3>🏦 Qual o melhor banco pra você</h3>
+                <p class="secao-sub">Cada banco tem pontos fortes diferentes dependendo do seu perfil</p>
+                <div class="lista-bancos-comparativo" id="listaBancosComparativo"></div>
+
+                <div class="destaque-dolar-euro">
+                    <h4>💵 Melhor para investir em Dólar e Euro</h4>
+                    <p id="textoDolarEuro"></p>
+                </div>
+
+                <p class="disclaimer-financeiro">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Conteúdo educativo e informativo, baseado em características gerais de mercado.
+                    Não é recomendação formal de investimento — consulte um assessor certificado antes de decidir.
+                </p>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- ===== PÁGINA: TRABALHE CONOSCO ===== -->
+    <div class="pagina-cheia" id="paginaTrabalhe">
+        <div class="pagina-topo">
+            <button class="btn-voltar-pagina" data-fechar="paginaTrabalhe"><i class="fa-solid fa-arrow-left"></i></button>
+            <h2><i class="fa-solid fa-briefcase"></i> Trabalhe Conosco</h2>
+        </div>
+        <div class="pagina-conteudo">
+            <p class="secao-sub">
+                Quer divulgar o app e ganhar por indicação? Ou é professor(a) / especialista em investimentos
+                e quer dar dicas dentro do app? Preencha a ficha abaixo.
+            </p>
+
+            <form class="ficha-cadastral" id="formTrabalheConosco">
+                <label class="label-campo">Nome completo</label>
+                <input type="text" id="tcNome" class="campo-editar" placeholder="Seu nome completo" required>
+
+                <label class="label-campo">Data de nascimento</label>
+                <input type="date" id="tcNascimento" class="campo-editar" required>
+
+                <label class="label-campo">Área de interesse</label>
+                <select id="tcArea" class="campo-editar">
+                    <option>Divulgador(a) — ganhar por indicação</option>
+                    <option>Professor(a) / especialista em investimentos</option>
+                    <option>Outro</option>
+                </select>
+
+                <label class="label-campo">Por que você quer trabalhar conosco?</label>
+                <textarea id="tcMotivo" class="campo-editar area-motivo" placeholder="Conte um pouco sobre você e sua motivação..." required></textarea>
+
+                <button type="submit" class="btn-salvar-perfil">Enviar candidatura</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== PÁGINA: VENDA DE PRODUTOS ===== -->
+    <div class="pagina-cheia" id="paginaVenda">
+        <div class="pagina-topo">
+            <button class="btn-voltar-pagina" data-fechar="paginaVenda"><i class="fa-solid fa-arrow-left"></i></button>
+            <h2><i class="fa-solid fa-store"></i> Loja & Mentoria</h2>
+        </div>
+        <div class="pagina-conteudo">
+
+            <section class="secao-pagina">
+                <h3>📚 E-books</h3>
+                <div class="lista-produtos" id="listaEbooks"></div>
+            </section>
+
+            <section class="secao-pagina">
+                <h3>🎓 Cursos completos</h3>
+                <div class="lista-produtos" id="listaCursos"></div>
+            </section>
+
+            <section class="secao-pagina">
+                <h3>🧑‍🏫 Professores disponíveis</h3>
+                <p class="secao-sub">Contrate um mentor pra te ajudar no dia a dia com dinheiro e investimentos</p>
+                <div class="lista-professores" id="listaProfessores"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- ===== MODAL ADICIONAR BANCO ===== -->
+    <div class="adicionar-banco-modal" id="adicionarBancoModal">
+        <div class="adicionar-banco-conteudo">
+            <button class="btn-fechar-edicao" id="fecharAdicionarBanco"><i class="fa-solid fa-xmark"></i></button>
+            <h3><i class="fa-solid fa-building-columns"></i> Adicionar banco</h3>
+            <p class="adicionar-banco-sub">Escolha um banco para conectar</p>
+            <div class="lista-bancos-disponiveis" id="listaBancosDisponiveis">
+                <!-- bancos disponíveis injetados via JS -->
+            </div>
+        </div>
+    </div>
+    <div class="overlay-adicionar-banco" id="overlayAdicionarBanco"></div>
+
+    <!-- ===== MODAL EDITAR PERFIL ===== -->
+    <div class="editar-perfil-modal" id="editarPerfilModal">
+        <div class="editar-perfil-conteudo">
+            <button class="btn-fechar-edicao" id="fecharEdicaoPerfil"><i class="fa-solid fa-xmark"></i></button>
+            <h3>Editar Perfil</h3>
+
+            <div class="editar-foto-wrapper">
+                <img id="previewFotoPerfil" class="foto-perfil" src="img/perfil.jpeg" alt="Foto de perfil">
+                <label for="inputFotoPerfil" class="btn-trocar-foto">
+                    <i class="fa-solid fa-camera"></i>
+                </label>
+                <input type="file" id="inputFotoPerfil" accept="image/*" hidden>
+            </div>
+
+            <label class="label-campo">Nome</label>
+            <input type="text" id="inputNomePerfil" class="campo-editar" placeholder="Seu nome">
+
+            <label class="label-campo">Cidade</label>
+            <input type="text" id="inputCidadePerfil" class="campo-editar" placeholder="Sua cidade">
+
+            <button class="btn-salvar-perfil" id="btnSalvarPerfil">Salvar alterações</button>
+        </div>
+    </div>
+    <div class="overlay-edicao" id="overlayEdicao"></div>
 
     <nav class="mobile-nav">
         <button class="nav-item active" data-painel="inicio" aria-label="Início"><i class="fa-solid fa-house"></i></button>

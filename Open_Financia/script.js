@@ -117,24 +117,168 @@ function atualizarProgressoCategorias() {
 }
 
 // ===== CONECTAR / DESCONECTAR BANCO (clique no card do banco) =====
-function inicializarConexoes() {
-    document.querySelectorAll(".banco[data-banco]").forEach(elBanco => {
-        elBanco.addEventListener("click", () => {
-            const nome = elBanco.dataset.banco;
-            const banco = bancos.find(b => b.nome === nome);
-            if (!banco) return;
+function anexarCliqueBanco(elBanco) {
+    elBanco.addEventListener("click", (e) => {
+        // clique no botão de remover é tratado à parte, não alterna conexão
+        if (e.target.closest(".btn-remover-banco")) return;
 
-            banco.conectado = !banco.conectado;
+        const nome = elBanco.dataset.banco;
+        const banco = bancos.find(b => b.nome === nome);
+        if (!banco) return;
 
-            const status = elBanco.querySelector(".status");
-            status.classList.toggle("conectado", banco.conectado);
-            status.classList.toggle("desconectado", !banco.conectado);
-            elBanco.style.opacity = banco.conectado ? "1" : ".5";
+        banco.conectado = !banco.conectado;
 
-            atualizarDashboard();
-        });
+        const status = elBanco.querySelector(".status");
+        status.classList.toggle("conectado", banco.conectado);
+        status.classList.toggle("desconectado", !banco.conectado);
+        elBanco.style.opacity = banco.conectado ? "1" : ".5";
+
+        atualizarDashboard();
     });
+
+    const btnRemover = elBanco.querySelector(".btn-remover-banco");
+    if (btnRemover) {
+        btnRemover.addEventListener("click", (e) => {
+            e.stopPropagation();
+            removerBanco(elBanco);
+        });
+    }
 }
+
+function removerBanco(elBanco) {
+    const nome = elBanco.dataset.banco;
+    const index = bancos.findIndex(b => b.nome === nome);
+    if (index !== -1) bancos.splice(index, 1);
+    elBanco.remove();
+
+    // remove também o cartão correspondente do carrossel
+    const indiceCartao = cartoes.findIndex(c => c.banco === nome);
+    if (indiceCartao !== -1) {
+        cartoes.splice(indiceCartao, 1);
+        if (indiceCartaoAtual >= cartoes.length) {
+            indiceCartaoAtual = Math.max(0, cartoes.length - 1);
+        }
+        renderizarCartoes();
+    }
+
+    atualizarDashboard();
+}
+
+function inicializarConexoes() {
+    document.querySelectorAll(".banco[data-banco]").forEach(anexarCliqueBanco);
+}
+
+// ===== ADICIONAR BANCO (catálogo de bancos que ainda não estão conectados) =====
+const catalogoBancosDisponiveis = [
+    { nome: "Itaú Unibanco",            saldo: 8100,  receita: 3600, despesas: 1400, investimento: 4700, bandeira: "Mastercard", cor1: "#FF8C00", cor2: "#B35900" },
+    { nome: "Bradesco",                 saldo: 6100,  receita: 2800, despesas: 1100, investimento: 4300, bandeira: "Visa",       cor1: "#E4002B", cor2: "#7A0019" },
+    { nome: "Banco do Brasil",          saldo: 6700,  receita: 3000, despesas: 1150, investimento: 3550, bandeira: "Mastercard", cor1: "#F9D616", cor2: "#0033A0" },
+    { nome: "BTG Pactual",              saldo: 12000, receita: 4200, despesas: 1000, investimento: 9800, bandeira: "Visa",       cor1: "#2B2B2B", cor2: "#000000" },
+    { nome: "Santander Brasil",         saldo: 5400,  receita: 2600, despesas: 900,  investimento: 3000, bandeira: "Mastercard", cor1: "#EC0000", cor2: "#8B0000" },
+    { nome: "Caixa Econômica Federal",  saldo: 3100,  receita: 1800, despesas: 700,  investimento: 1200, bandeira: "Elo",        cor1: "#0057B8", cor2: "#003366" },
+    { nome: "Sicoob (Consolidado)",     saldo: 4300,  receita: 2000, despesas: 850,  investimento: 2100, bandeira: "Mastercard", cor1: "#00A651", cor2: "#00693E" },
+    { nome: "Sicredi (Consolidado)",    saldo: 4600,  receita: 2150, despesas: 900,  investimento: 2300, bandeira: "Visa",       cor1: "#6EC800", cor2: "#4C8C00" },
+    { nome: "Banco Safra",              saldo: 9200,  receita: 3300, despesas: 1100, investimento: 6800, bandeira: "Mastercard", cor1: "#002B5C", cor2: "#001830" },
+    { nome: "Citibank Brasil",          saldo: 7000,  receita: 2900, despesas: 1050, investimento: 4500, bandeira: "Visa",       cor1: "#003A70", cor2: "#001F3F" }
+];
+
+const btnAdicionarBanco       = document.getElementById("btnAdicionarBanco");
+const adicionarBancoModal     = document.getElementById("adicionarBancoModal");
+const overlayAdicionarBanco   = document.getElementById("overlayAdicionarBanco");
+const fecharAdicionarBancoBtn = document.getElementById("fecharAdicionarBanco");
+const listaBancosDisponiveisEl = document.getElementById("listaBancosDisponiveis");
+
+function renderizarBancoNaLista(banco) {
+    const el = document.createElement("div");
+    el.className = "banco";
+    el.dataset.banco = banco.nome;
+    el.innerHTML = `
+        <div class="info-banco">
+            <i class="fa-solid fa-building-columns"></i>
+            <span>${banco.nome}</span>
+        </div>
+        <div class="banco-acoes">
+            <span class="status conectado">●</span>
+            <button class="btn-remover-banco" title="Remover banco"><i class="fa-solid fa-trash"></i></button>
+        </div>
+    `;
+    anexarCliqueBanco(el);
+
+    // insere o novo banco logo antes do botão "Adicionar banco"
+    btnAdicionarBanco.parentNode.insertBefore(el, btnAdicionarBanco);
+}
+
+function gerarNumeroCartao() {
+    const ultimosDigitos = Math.floor(1000 + Math.random() * 9000);
+    return `•••• •••• •••• ${ultimosDigitos}`;
+}
+
+function adicionarBanco(dadosBanco) {
+    const novoBanco = {
+        nome: dadosBanco.nome,
+        saldo: dadosBanco.saldo,
+        receita: dadosBanco.receita,
+        despesas: dadosBanco.despesas,
+        investimento: dadosBanco.investimento,
+        conectado: true
+    };
+    bancos.push(novoBanco);
+    renderizarBancoNaLista(novoBanco);
+
+    // cria o cartão correspondente e mostra ele no carrossel "Meus Cartões"
+    cartoes.push({
+        banco: dadosBanco.nome,
+        bandeira: dadosBanco.bandeira || "Mastercard",
+        numero: gerarNumeroCartao(),
+        titular: nomePerfilPrincipal ? nomePerfilPrincipal.textContent.trim().toUpperCase() : "TITULAR",
+        cor1: dadosBanco.cor1 || "#4F46E5",
+        cor2: dadosBanco.cor2 || "#312E81"
+    });
+    indiceCartaoAtual = cartoes.length - 1; // já mostra o cartão recém-adicionado na frente
+    renderizarCartoes();
+
+    atualizarDashboard();
+    fecharModalAdicionarBanco();
+}
+
+function abrirModalAdicionarBanco() {
+    listaBancosDisponiveisEl.innerHTML = "";
+
+    const restantes = catalogoBancosDisponiveis.filter(
+        cb => !bancos.some(b => b.nome === cb.nome)
+    );
+
+    if (restantes.length === 0) {
+        listaBancosDisponiveisEl.innerHTML =
+            `<p class="sem-bancos">Você já conectou todos os bancos disponíveis 🎉</p>`;
+    } else {
+        restantes.forEach(cb => {
+            const item = document.createElement("div");
+            item.className = "banco-disponivel";
+            item.innerHTML = `
+                <div class="info-banco">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <span>${cb.nome}</span>
+                </div>
+                <i class="fa-solid fa-plus"></i>
+            `;
+            item.addEventListener("click", () => adicionarBanco(cb));
+            listaBancosDisponiveisEl.appendChild(item);
+        });
+    }
+
+    adicionarBancoModal.classList.add("aberto");
+    overlayAdicionarBanco.classList.add("ativo");
+}
+
+function fecharModalAdicionarBanco() {
+    adicionarBancoModal.classList.remove("aberto");
+    overlayAdicionarBanco.classList.remove("ativo");
+}
+
+if (btnAdicionarBanco) btnAdicionarBanco.addEventListener("click", abrirModalAdicionarBanco);
+if (fecharAdicionarBancoBtn) fecharAdicionarBancoBtn.addEventListener("click", fecharModalAdicionarBanco);
+if (overlayAdicionarBanco) overlayAdicionarBanco.addEventListener("click", fecharModalAdicionarBanco);
 
 // ===== CARTÕES (carrossel futurista) =====
 const cartoes = [
@@ -192,6 +336,7 @@ function renderizarCartoes() {
 
 function proximoCartao() {
     const total = cartoes.length;
+    if (total === 0) return;
     const frente = stackEl.querySelector(".pos-0");
 
     // efeito: cartão da frente "pula" pra trás antes de reordenar o stack
@@ -207,6 +352,7 @@ function proximoCartao() {
 
 function cartaoAnterior() {
     const total = cartoes.length;
+    if (total === 0) return;
     indiceCartaoAtual = (indiceCartaoAtual - 1 + total) % total;
     renderizarCartoes();
 }
@@ -325,10 +471,388 @@ function inicializarNavMobile() {
     }
 }
 
+// ===== EDITAR PERFIL (foto + nome + cidade, persistido em localStorage) =====
+const btnEditarPerfil   = document.getElementById("btnEditarPerfil");
+const editarPerfilModal = document.getElementById("editarPerfilModal");
+const overlayEdicao     = document.getElementById("overlayEdicao");
+const fecharEdicaoBtn   = document.getElementById("fecharEdicaoPerfil");
+const inputFotoPerfil   = document.getElementById("inputFotoPerfil");
+const previewFotoPerfil = document.getElementById("previewFotoPerfil");
+const inputNomePerfil   = document.getElementById("inputNomePerfil");
+const inputCidadePerfil = document.getElementById("inputCidadePerfil");
+const btnSalvarPerfil   = document.getElementById("btnSalvarPerfil");
+
+const fotoPerfilPrincipal = document.querySelector(".perfil .foto-perfil");
+const nomePerfilPrincipal = document.querySelector(".perfil h3");
+
+let fotoTemporaria = null;
+
+function abrirEdicaoPerfil() {
+    // pré-preenche com os valores atuais
+    inputNomePerfil.value = nomePerfilPrincipal.textContent.trim();
+    inputCidadePerfil.value = localStorage.getItem("cidadePerfil") || usuario.cidade;
+    previewFotoPerfil.src = fotoPerfilPrincipal.src;
+    fotoTemporaria = null;
+
+    editarPerfilModal.classList.add("aberto");
+    overlayEdicao.classList.add("ativo");
+}
+
+function fecharEdicaoPerfil() {
+    editarPerfilModal.classList.remove("aberto");
+    overlayEdicao.classList.remove("ativo");
+}
+
+if (btnEditarPerfil) btnEditarPerfil.addEventListener("click", abrirEdicaoPerfil);
+if (fecharEdicaoBtn) fecharEdicaoBtn.addEventListener("click", fecharEdicaoPerfil);
+if (overlayEdicao) overlayEdicao.addEventListener("click", fecharEdicaoPerfil);
+
+// pré-visualização da foto escolhida
+if (inputFotoPerfil) {
+    inputFotoPerfil.addEventListener("change", (e) => {
+        const arquivo = e.target.files[0];
+        if (!arquivo) return;
+
+        const leitor = new FileReader();
+        leitor.onload = (evento) => {
+            fotoTemporaria = evento.target.result;
+            previewFotoPerfil.src = fotoTemporaria;
+        };
+        leitor.readAsDataURL(arquivo);
+    });
+}
+
+// salvar alterações
+if (btnSalvarPerfil) {
+    btnSalvarPerfil.addEventListener("click", () => {
+        const novoNome   = inputNomePerfil.value.trim();
+        const novaCidade = inputCidadePerfil.value.trim();
+
+        if (novoNome) {
+            nomePerfilPrincipal.textContent = novoNome;
+            localStorage.setItem("nomePerfil", novoNome);
+        }
+        if (novaCidade) {
+            localStorage.setItem("cidadePerfil", novaCidade);
+        }
+        if (fotoTemporaria) {
+            fotoPerfilPrincipal.src = fotoTemporaria;
+            localStorage.setItem("fotoPerfil", fotoTemporaria);
+        }
+
+        fecharEdicaoPerfil();
+    });
+}
+
+// aplica dados salvos ao carregar a página
+function aplicarPerfilSalvo() {
+    const nomeSalvo  = localStorage.getItem("nomePerfil");
+    const fotoSalva  = localStorage.getItem("fotoPerfil");
+
+    if (nomeSalvo) nomePerfilPrincipal.textContent = nomeSalvo;
+    if (fotoSalva) fotoPerfilPrincipal.src = fotoSalva;
+}
+
+// ===== SELETOR DE MÊS (usa a data real do dispositivo, sem ficar fixo) =====
+const nomesMeses = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+];
+
+const btnSeletorMes   = document.getElementById("btnSeletorMes");
+const mesAtualTexto   = document.getElementById("mesAtualTexto");
+const dropdownMes     = document.getElementById("dropdownMes");
+
+function formatarMesAno(data) {
+    return `${nomesMeses[data.getMonth()]} de ${data.getFullYear()}`;
+}
+
+function inicializarSeletorMes() {
+    const hoje = new Date();
+    mesAtualTexto.textContent = formatarMesAno(hoje);
+
+    // gera os últimos 6 meses (incluindo o atual) pra escolher
+    dropdownMes.innerHTML = "";
+    for (let i = 0; i < 6; i++) {
+        const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+        const opcao = document.createElement("div");
+        opcao.className = "opcao-mes" + (i === 0 ? " selecionado" : "");
+        opcao.textContent = formatarMesAno(data);
+        opcao.addEventListener("click", () => {
+            mesAtualTexto.textContent = formatarMesAno(data);
+            dropdownMes.querySelectorAll(".opcao-mes").forEach(o => o.classList.remove("selecionado"));
+            opcao.classList.add("selecionado");
+            dropdownMes.classList.remove("aberto");
+        });
+        dropdownMes.appendChild(opcao);
+    }
+}
+
+if (btnSeletorMes) {
+    btnSeletorMes.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdownMes.classList.toggle("aberto");
+    });
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".seletor-mes-wrapper")) {
+            dropdownMes.classList.remove("aberto");
+        }
+    });
+}
+
+// ===== E-MAIL DE DESTINO (troque pelo seu e-mail real) =====
+const EMAIL_DESTINO = "seuemail@exemplo.com";
+
+// ===== NAVEGAÇÃO ENTRE PÁGINAS COMPLETAS =====
+function abrirPagina(id) {
+    const pagina = document.getElementById(id);
+    if (pagina) pagina.classList.add("aberta");
+}
+function fecharPagina(id) {
+    const pagina = document.getElementById(id);
+    if (pagina) pagina.classList.remove("aberta");
+}
+
+const itemFeedComunidade  = document.getElementById("itemFeedComunidade");
+const itemTrabalheConosco = document.getElementById("itemTrabalheConosco");
+const itemVendaProdutos   = document.getElementById("itemVendaProdutos");
+
+if (itemFeedComunidade)  itemFeedComunidade.addEventListener("click", () => abrirPagina("paginaFeed"));
+if (itemTrabalheConosco) itemTrabalheConosco.addEventListener("click", () => abrirPagina("paginaTrabalhe"));
+if (itemVendaProdutos)   itemVendaProdutos.addEventListener("click", () => abrirPagina("paginaVenda"));
+
+document.querySelectorAll(".btn-voltar-pagina").forEach(btn => {
+    btn.addEventListener("click", () => fecharPagina(btn.dataset.fechar));
+});
+
+// ===== FEED DA COMUNIDADE =====
+const comentariosPadrao = [
+    { nome: "Marcos T.",  texto: "Seria ótimo ter gráfico de gastos por categoria em pizza, não só as barras de progresso.", curtidas: 24 },
+    { nome: "Bia Ferreira", texto: "Poderia ter exportação de extrato em PDF pra declarar Imposto de Renda depois.", curtidas: 18 },
+    { nome: "Rodrigo A.", texto: "Notificação quando uma conta fixa (aluguel, internet) tá perto do vencimento seria muito útil!", curtidas: 15 },
+    { nome: "Camila S.",  texto: "Adicionar metas por categoria, não só uma meta geral de viagem.", curtidas: 9 }
+];
+
+function carregarComentarios() {
+    const salvos = JSON.parse(localStorage.getItem("comentariosUsuario") || "[]");
+    return [...salvos, ...comentariosPadrao];
+}
+
+function renderizarComentarios() {
+    const lista = document.getElementById("listaComentarios");
+    if (!lista) return;
+    lista.innerHTML = "";
+    carregarComentarios().forEach(c => {
+        const el = document.createElement("div");
+        el.className = "comentario-item";
+        el.innerHTML = `
+            <div class="comentario-topo">
+                <span class="comentario-nome">${c.nome}</span>
+                <span class="comentario-curtidas"><i class="fa-regular fa-thumbs-up"></i> ${c.curtidas}</span>
+            </div>
+            <p class="comentario-texto">${c.texto}</p>
+        `;
+        lista.appendChild(el);
+    });
+}
+
+const btnEnviarComentario  = document.getElementById("btnEnviarComentario");
+const inputNovoComentario  = document.getElementById("inputNovoComentario");
+if (btnEnviarComentario) {
+    btnEnviarComentario.addEventListener("click", () => {
+        const texto = inputNovoComentario.value.trim();
+        if (!texto) return;
+
+        const salvos = JSON.parse(localStorage.getItem("comentariosUsuario") || "[]");
+        salvos.unshift({ nome: "Você", texto, curtidas: 0 });
+        localStorage.setItem("comentariosUsuario", JSON.stringify(salvos));
+
+        inputNovoComentario.value = "";
+        renderizarComentarios();
+    });
+}
+
+// ===== DICAS DE INVESTIMENTO =====
+const dicasInvestimento = [
+    { icone: "fa-piggy-bank",     titulo: "Comece com a reserva", texto: "Antes de investir em qualquer coisa, tenha de 3 a 6 meses de gastos guardados em algo líquido, tipo Tesouro Selic ou CDB com liquidez diária." },
+    { icone: "fa-dollar-sign",    titulo: "Investir em Dólar",    texto: "Fundos cambiais, ETFs internacionais (como IVVB11) ou conta em corretora internacional são formas comuns de se expor ao dólar." },
+    { icone: "fa-euro-sign",      titulo: "Investir em Euro",     texto: "Menos comum que o dólar no Brasil — geralmente feito via ETFs europeus ou contas multimoeda em corretoras internacionais." },
+    { icone: "fa-scale-balanced", titulo: "Organização financeira", texto: "Regra 50-30-20: 50% para gastos essenciais, 30% para desejos, 20% para investimentos e reserva." },
+    { icone: "fa-chart-pie",      titulo: "Diversifique",         texto: "Não coloque tudo em um único tipo de investimento. Combine renda fixa, renda variável e, se fizer sentido pra você, moeda estrangeira." },
+    { icone: "fa-calendar-check", titulo: "Invista com constância", texto: "Aportes mensais recorrentes (mesmo pequenos) tendem a render mais no longo prazo do que tentar 'acertar o timing' do mercado." }
+];
+
+function renderizarDicasInvestimento() {
+    const grid = document.getElementById("gridDicasInvestimento");
+    if (!grid) return;
+    grid.innerHTML = "";
+    dicasInvestimento.forEach(d => {
+        const el = document.createElement("div");
+        el.className = "dica-card";
+        el.innerHTML = `
+            <div class="dica-icone"><i class="fa-solid ${d.icone}"></i></div>
+            <h4>${d.titulo}</h4>
+            <p>${d.texto}</p>
+        `;
+        grid.appendChild(el);
+    });
+}
+
+// ===== COMPARATIVO DE BANCOS =====
+const bancosComparativo = [
+    { nome: "Nubank",        texto: "Bom custo-benefício no dia a dia: conta sem tarifa, cartão sem anuidade e CDB com rendimento automático no saldo." },
+    { nome: "Itaú Unibanco", texto: "Rede física ampla e forte estrutura de investimentos (renda fixa, fundos, ações) para quem quer tudo em um lugar só." },
+    { nome: "BTG Pactual",   texto: "Voltado a quem já tem mais patrimônio: acesso a produtos de investimento mais sofisticados e assessoria dedicada." },
+    { nome: "Inter",         texto: "Conta digital completa com corretora integrada — bom para quem quer banco + investimentos + cartão em um único app." },
+    { nome: "C6 Bank",       texto: "Conta 'Global' permite guardar e movimentar dólar diretamente pelo app, sem precisar de corretora à parte." }
+];
+
+function renderizarBancosComparativo() {
+    const lista = document.getElementById("listaBancosComparativo");
+    if (!lista) return;
+    lista.innerHTML = "";
+    bancosComparativo.forEach(b => {
+        const el = document.createElement("div");
+        el.className = "banco-comparativo-item";
+        el.innerHTML = `
+            <h4><i class="fa-solid fa-building-columns"></i> ${b.nome}</h4>
+            <p>${b.texto}</p>
+        `;
+        lista.appendChild(el);
+    });
+
+    const textoDolarEuro = document.getElementById("textoDolarEuro");
+    if (textoDolarEuro) {
+        textoDolarEuro.textContent =
+            "Para dólar, contas como C6 Global, Nomad e Avenue costumam ser as mais citadas por facilitarem compra, guarda e transferência da moeda. " +
+            "Para euro, o acesso costuma vir mais por corretoras internacionais (como Avenue) ou ETFs específicos, já que poucos bancos brasileiros oferecem conta direta em euro.";
+    }
+}
+
+// ===== TRABALHE CONOSCO (envia por e-mail via mailto) =====
+const formTrabalheConosco = document.getElementById("formTrabalheConosco");
+if (formTrabalheConosco) {
+    formTrabalheConosco.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const nome       = document.getElementById("tcNome").value.trim();
+        const nascimento = document.getElementById("tcNascimento").value;
+        const area       = document.getElementById("tcArea").value;
+        const motivo     = document.getElementById("tcMotivo").value.trim();
+
+        const assunto = encodeURIComponent("Nova candidatura - Trabalhe Conosco");
+        const corpo = encodeURIComponent(
+            `Nome completo: ${nome}\n` +
+            `Data de nascimento: ${nascimento}\n` +
+            `Área de interesse: ${area}\n\n` +
+            `Motivo:\n${motivo}`
+        );
+
+        window.location.href = `mailto:${EMAIL_DESTINO}?subject=${assunto}&body=${corpo}`;
+    });
+}
+
+// ===== VENDA DE PRODUTOS =====
+const ebooksDisponiveis = [
+    { titulo: "Primeiros Passos no Investimento", desc: "Guia básico para quem nunca investiu: reserva de emergência, renda fixa e primeiros passos.", preco: "R$ 29,90" },
+    { titulo: "Guia de Investimento em Dólar",     desc: "Como funciona a exposição cambial, ETFs internacionais e contas multimoeda.", preco: "R$ 39,90" },
+    { titulo: "Organização Financeira do Zero",    desc: "Planilhas e métodos práticos para sair das dívidas e organizar o orçamento mensal.", preco: "R$ 24,90" }
+];
+
+const cursosDisponiveis = [
+    { titulo: "Curso Completo de Investimentos",  desc: "Da reserva de emergência à renda variável, com aulas em vídeo e certificado.", preco: "R$ 197,00" },
+    { titulo: "Dólar e Euro na Prática",           desc: "Como montar uma carteira com exposição internacional de forma segura.", preco: "R$ 147,00" },
+    { titulo: "Finanças Pessoais Avançado",        desc: "Planejamento financeiro completo: orçamento, metas, aposentadoria e investimentos.", preco: "R$ 167,00" }
+];
+
+const professoresDisponiveis = [
+    { nome: "Ana Beatriz Costa", especialidade: "Investimentos em Renda Fixa e Reserva de Emergência", preco: "R$ 90/hora" },
+    { nome: "Carlos Eduardo Lima", especialidade: "Investimentos internacionais (Dólar e Euro)",        preco: "R$ 120/hora" },
+    { nome: "Juliana Marques",    especialidade: "Organização financeira e controle de gastos",         preco: "R$ 80/hora" }
+];
+
+function iniciaisNome(nome) {
+    return nome.split(" ").map(p => p[0]).slice(0, 2).join("").toUpperCase();
+}
+
+function abrirInteressePorEmail(assuntoTexto, itemTexto) {
+    const assunto = encodeURIComponent(assuntoTexto);
+    const corpo = encodeURIComponent(`Olá! Tenho interesse em: ${itemTexto}\n\nMeu nome:\nMeu e-mail de contato:`);
+    window.location.href = `mailto:${EMAIL_DESTINO}?subject=${assunto}&body=${corpo}`;
+}
+
+function renderizarProdutos() {
+    const listaEbooks = document.getElementById("listaEbooks");
+    const listaCursos = document.getElementById("listaCursos");
+    const listaProfessores = document.getElementById("listaProfessores");
+    if (!listaEbooks || !listaCursos || !listaProfessores) return;
+
+    listaEbooks.innerHTML = "";
+    ebooksDisponiveis.forEach(item => {
+        const el = document.createElement("div");
+        el.className = "produto-card";
+        el.innerHTML = `
+            <div class="produto-info">
+                <h4>${item.titulo}</h4>
+                <p>${item.desc}</p>
+                <span class="produto-preco">${item.preco}</span>
+            </div>
+            <button class="btn-comprar">Comprar</button>
+        `;
+        el.querySelector(".btn-comprar").addEventListener("click", () =>
+            abrirInteressePorEmail("Interesse em E-book", item.titulo)
+        );
+        listaEbooks.appendChild(el);
+    });
+
+    listaCursos.innerHTML = "";
+    cursosDisponiveis.forEach(item => {
+        const el = document.createElement("div");
+        el.className = "produto-card";
+        el.innerHTML = `
+            <div class="produto-info">
+                <h4>${item.titulo}</h4>
+                <p>${item.desc}</p>
+                <span class="produto-preco">${item.preco}</span>
+            </div>
+            <button class="btn-comprar">Comprar</button>
+        `;
+        el.querySelector(".btn-comprar").addEventListener("click", () =>
+            abrirInteressePorEmail("Interesse em Curso", item.titulo)
+        );
+        listaCursos.appendChild(el);
+    });
+
+    listaProfessores.innerHTML = "";
+    professoresDisponiveis.forEach(prof => {
+        const el = document.createElement("div");
+        el.className = "professor-card";
+        el.innerHTML = `
+            <div class="professor-avatar">${iniciaisNome(prof.nome)}</div>
+            <div class="professor-info">
+                <h4>${prof.nome}</h4>
+                <span>${prof.especialidade}</span>
+                <span class="professor-preco">${prof.preco}</span>
+            </div>
+            <button class="btn-comprar">Contratar</button>
+        `;
+        el.querySelector(".btn-comprar").addEventListener("click", () =>
+            abrirInteressePorEmail("Interesse em contratar professor", prof.nome)
+        );
+        listaProfessores.appendChild(el);
+    });
+}
+
 // INICIALIZAÇÃO 
 aplicarTemaSalvo();
+aplicarPerfilSalvo();
+inicializarSeletorMes();
 atualizarDashboard();
 atualizarProgressoCategorias();
 inicializarConexoes();
 renderizarCartoes();
 inicializarNavMobile();
+renderizarComentarios();
+renderizarDicasInvestimento();
+renderizarBancosComparativo();
+renderizarProdutos();
