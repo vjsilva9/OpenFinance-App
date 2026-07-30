@@ -169,24 +169,97 @@ function inicializarConexoes() {
 }
 
 // ===== ADICIONAR BANCO (catálogo de bancos que ainda não estão conectados) =====
-const catalogoBancosDisponiveis = [
-    { nome: "Itaú Unibanco",            saldo: 8100,  receita: 3600, despesas: 1400, investimento: 4700, bandeira: "Mastercard", cor1: "#FF8C00", cor2: "#B35900" },
-    { nome: "Bradesco",                 saldo: 6100,  receita: 2800, despesas: 1100, investimento: 4300, bandeira: "Visa",       cor1: "#E4002B", cor2: "#7A0019" },
-    { nome: "Banco do Brasil",          saldo: 6700,  receita: 3000, despesas: 1150, investimento: 3550, bandeira: "Mastercard", cor1: "#F9D616", cor2: "#0033A0" },
-    { nome: "BTG Pactual",              saldo: 12000, receita: 4200, despesas: 1000, investimento: 9800, bandeira: "Visa",       cor1: "#2B2B2B", cor2: "#000000" },
-    { nome: "Santander Brasil",         saldo: 5400,  receita: 2600, despesas: 900,  investimento: 3000, bandeira: "Mastercard", cor1: "#EC0000", cor2: "#8B0000" },
-    { nome: "Caixa Econômica Federal",  saldo: 3100,  receita: 1800, despesas: 700,  investimento: 1200, bandeira: "Elo",        cor1: "#0057B8", cor2: "#003366" },
-    { nome: "Sicoob (Consolidado)",     saldo: 4300,  receita: 2000, despesas: 850,  investimento: 2100, bandeira: "Mastercard", cor1: "#00A651", cor2: "#00693E" },
-    { nome: "Sicredi (Consolidado)",    saldo: 4600,  receita: 2150, despesas: 900,  investimento: 2300, bandeira: "Visa",       cor1: "#6EC800", cor2: "#4C8C00" },
-    { nome: "Banco Safra",              saldo: 9200,  receita: 3300, despesas: 1100, investimento: 6800, bandeira: "Mastercard", cor1: "#002B5C", cor2: "#001830" },
-    { nome: "Citibank Brasil",          saldo: 7000,  receita: 2900, despesas: 1050, investimento: 4500, bandeira: "Visa",       cor1: "#003A70", cor2: "#001F3F" }
+
+// gera um número "hash" simples e consistente a partir do nome do banco
+// (mesmo nome sempre gera o mesmo resultado, então os dados não mudam a cada recarregamento)
+function hashTexto(texto) {
+    let hash = 0;
+    for (let i = 0; i < texto.length; i++) {
+        hash = texto.charCodeAt(i) + ((hash << 5) - hash);
+        hash |= 0;
+    }
+    return Math.abs(hash);
+}
+
+// dados financeiros fictícios, gerados a partir do nome (dentro de faixas realistas)
+function gerarDadosFinanceiros(nome) {
+    const h = hashTexto(nome);
+    return {
+        saldo:        2000 + (h % 9000),
+        receita:      800  + (h % 3500),
+        despesas:     400  + (h % 1300),
+        investimento: 500  + (h % 6000)
+    };
+}
+
+// cores/bandeira dos 4 bancos que já vêm conectados por padrão no app —
+// preservadas aqui pra manter a aparência original caso sejam removidos e adicionados de novo
+const estiloCartoesPadrao = {
+    "Nubank":       { cor1: "#8A05BE", cor2: "#4B0082", bandeira: "Mastercard" },
+    "Bradesco":     { cor1: "#E4002B", cor2: "#7A0019", bandeira: "Visa" },
+    "Banco Pan":    { cor1: "#0057B8", cor2: "#00234F", bandeira: "Mastercard" },
+    "Mercado Pago": { cor1: "#00B1EA", cor2: "#0047BB", bandeira: "Visa" }
+};
+
+// cor e bandeira do cartão: usa a cor "oficial" se o banco for um dos padrão,
+// senão gera uma cor consistente a partir do nome
+function gerarEstiloCartao(nome) {
+    if (estiloCartoesPadrao[nome]) return estiloCartoesPadrao[nome];
+
+    const h = hashTexto(nome);
+    const matiz = h % 360;
+    const bandeiras = ["Visa", "Mastercard", "Elo"];
+
+    return {
+        cor1: `hsl(${matiz}, 72%, 50%)`,
+        cor2: `hsl(${(matiz + 30) % 360}, 72%, 28%)`,
+        bandeira: bandeiras[h % bandeiras.length]
+    };
+}
+
+// lista com (praticamente) todos os bancos que operam no Brasil
+const nomesBancosCatalogo = [
+    // bancos públicos / regionais
+    "Banco do Brasil", "Caixa Econômica Federal", "Banco da Amazônia", "Banco do Nordeste",
+    "BRB (Banco de Brasília)", "Banestes", "Banrisul", "Banese",
+
+    // grandes bancos privados
+    "Itaú Unibanco", "Bradesco", "Santander Brasil", "BTG Pactual", "Banco Safra",
+    "ABC Brasil", "Daycoval", "Banco Fibra", "Mercantil do Brasil", "Banco Pine",
+    "BMG", "Sofisa", "Banco Original", "Banco Master", "C6 Bank", "Banco Inter",
+    "Banco BV", "Banco Pan", "Nubank", "Banco Digio", "Banco Bari", "Will Bank",
+    "Neon", "Banco BS2", "Mercado Pago",
+
+    // bancos de investimento / câmbio / estrangeiros
+    "XP Banco", "Modal", "Banco Alfa", "Banco Ribeirão Preto", "Banco Paulista",
+    "Banco Guanabara", "Banco Arbi", "Banco Topázio", "Banco Rendimento",
+    "Banco BOCOM BBM", "Banco Fator", "Banco Voiter", "Banco CCB Brasil",
+    "Banco Sumitomo Mitsui Brasileiro", "Banco MUFG Brasil", "Banco Mizuho do Brasil",
+    "Deutsche Bank Brasil", "BNP Paribas Brasil", "Citibank Brasil", "Bank of China Brasil",
+    "ICBC do Brasil", "Scotiabank Brasil", "Bank of America Brasil", "JP Morgan Brasil",
+    "Goldman Sachs do Brasil", "Credit Suisse Brasil",
+
+    // cooperativas de crédito
+    "Sicredi (Consolidado)", "Sicoob (Consolidado)", "Cresol", "Unicred", "Ailos",
+
+    // contas globais / câmbio / remessas internacionais
+    "Wise", "Nomad", "Avenue", "Payoneer", "Husky", "TechFX", "Remessa Online",
+    "Travelex Bank", "Ouribank", "Western Union Digital", "Câmbio Store"
 ];
+
+// monta o catálogo final combinando nome + dados financeiros + estilo do cartão
+const catalogoBancosDisponiveis = nomesBancosCatalogo.map(nome => ({
+    nome,
+    ...gerarDadosFinanceiros(nome),
+    ...gerarEstiloCartao(nome)
+}));
 
 const btnAdicionarBanco       = document.getElementById("btnAdicionarBanco");
 const adicionarBancoModal     = document.getElementById("adicionarBancoModal");
 const overlayAdicionarBanco   = document.getElementById("overlayAdicionarBanco");
 const fecharAdicionarBancoBtn = document.getElementById("fecharAdicionarBanco");
 const listaBancosDisponiveisEl = document.getElementById("listaBancosDisponiveis");
+const buscaBancoAdicionarEl    = document.getElementById("buscaBancoAdicionar");
 
 function renderizarBancoNaLista(banco) {
     const el = document.createElement("div");
@@ -241,34 +314,57 @@ function adicionarBanco(dadosBanco) {
     fecharModalAdicionarBanco();
 }
 
-function abrirModalAdicionarBanco() {
+function renderizarListaBancosFiltrada(termo = "") {
     listaBancosDisponiveisEl.innerHTML = "";
 
     const restantes = catalogoBancosDisponiveis.filter(
         cb => !bancos.some(b => b.nome === cb.nome)
     );
 
+    const filtrados = termo
+        ? restantes.filter(cb => cb.nome.toLowerCase().includes(termo.toLowerCase()))
+        : restantes;
+
     if (restantes.length === 0) {
         listaBancosDisponiveisEl.innerHTML =
             `<p class="sem-bancos">Você já conectou todos os bancos disponíveis 🎉</p>`;
-    } else {
-        restantes.forEach(cb => {
-            const item = document.createElement("div");
-            item.className = "banco-disponivel";
-            item.innerHTML = `
-                <div class="info-banco">
-                    <i class="fa-solid fa-building-columns"></i>
-                    <span>${cb.nome}</span>
-                </div>
-                <i class="fa-solid fa-plus"></i>
-            `;
-            item.addEventListener("click", () => adicionarBanco(cb));
-            listaBancosDisponiveisEl.appendChild(item);
-        });
+        return;
     }
+
+    if (filtrados.length === 0) {
+        listaBancosDisponiveisEl.innerHTML =
+            `<p class="sem-bancos">Nenhum banco encontrado para "${termo}"</p>`;
+        return;
+    }
+
+    filtrados.forEach(cb => {
+        const item = document.createElement("div");
+        item.className = "banco-disponivel";
+        item.innerHTML = `
+            <div class="info-banco">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>${cb.nome}</span>
+            </div>
+            <i class="fa-solid fa-plus"></i>
+        `;
+        item.addEventListener("click", () => adicionarBanco(cb));
+        listaBancosDisponiveisEl.appendChild(item);
+    });
+}
+
+function abrirModalAdicionarBanco() {
+    if (buscaBancoAdicionarEl) buscaBancoAdicionarEl.value = "";
+    renderizarListaBancosFiltrada();
 
     adicionarBancoModal.classList.add("aberto");
     overlayAdicionarBanco.classList.add("ativo");
+    if (buscaBancoAdicionarEl) buscaBancoAdicionarEl.focus();
+}
+
+if (buscaBancoAdicionarEl) {
+    buscaBancoAdicionarEl.addEventListener("input", () => {
+        renderizarListaBancosFiltrada(buscaBancoAdicionarEl.value.trim());
+    });
 }
 
 function fecharModalAdicionarBanco() {

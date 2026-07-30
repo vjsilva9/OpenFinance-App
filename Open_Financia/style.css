@@ -1399,6 +1399,9 @@ body.dark .adicionar-banco-conteudo{
     font-size: 13px;
     margin: 8px 0 18px;
 }
+.campo-busca-banco{
+    margin-bottom: 14px;
+}
 .lista-bancos-disponiveis{
     display: flex;
     flex-direction: column;
